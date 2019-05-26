@@ -35,20 +35,16 @@ end
 % Matrix zusammmengesetzt.
 
 function [ric] = random_inner_center(n)
-v_1 = firstcoordinatevector(n);
-iyc = @inner_y_coordinate;
-v_2 = arrayfun(iyc,v_1);
+v_1 = -1 + 2.*rand(n,1);
+v_2 = arrayfun(@inner_y_coordinate,v_1);
 ric = [v_1, v_2];
 end
 
-function [v_1] = firstcoordinatevector(n)
-v_1 = -1 + 2.*rand(n,1);
-end
 
 function [l] = inner_y_coordinate(x)
-if -1 < x & x < 0
+if -1 < x && x < 0
     l = -1 + 2.*rand(1,1);
-elseif 0 <= x & x < 1
+elseif 0 <= x && x < 1
     l = -1 + rand(1,1);
 end
 end
@@ -66,41 +62,49 @@ end
 
 function [rec] = random_edge_center(m)
 A = 8.*rand(m,1);
-fc = @firstcoordinate;
-sc = @secondcoordinate;
-B = arrayfun(fc,A);
-C = arrayfun(sc,A);
+B = arrayfun(@firstcoordinate,A);
+C = arrayfun(@secondcoordinate,A);
 rec = [B,C];
 end
 
 function [x] = firstcoordinate(k)
-if 0 <= k & k< 2
-    x = k-1;
-elseif 2 <= k & k < 3
-    x = 1;
-elseif 3 <= k & k < 4
-    x = 4-k;
-elseif 4 <= k & k < 5
-    x = 0;
-elseif 5 <= k & k < 6
-    x = 5-k;
-elseif 6 <= k & k < 8
-    x = -1;
+switch floor(k)
+    case 0
+        x = k-1;
+    case 1
+        x = k-1;
+    case 2
+        x = 1;
+    case 3
+        x = 4-k;
+    case 4
+        x = 0;
+    case 5
+        x = 5-k;
+    case 6
+        x = -1;
+    case 7
+        x = -1;
 end
 end
 
 function [y] = secondcoordinate(k)
-if 0 <= k & k < 2
-    y = -1;
-elseif 2 <= k & k < 3
-    y = k-3;
-elseif 3 <= k & k < 4
-    y = 0;
-elseif 4 <= k & k < 5
-    y = k-4;
-elseif 5 <= k & k < 6
-    y = 1;
-elseif 6 <= k & k < 8
-    y = 7-k;
+switch floor(k)
+    case 0
+        y = -1;
+    case 1
+        y = -1;
+    case 2
+        y = k-3;
+    case 3
+        y = 0;
+    case 4
+        y = k-4;
+    case 5
+        y = 1;
+    case 6
+        y = 7-k;
+    case 7
+        y = 7-k;
 end
 end
