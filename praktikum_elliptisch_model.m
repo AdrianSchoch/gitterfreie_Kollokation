@@ -1,4 +1,4 @@
-function model = praktikum_elliptisch_model(params);
+function model = praktikum_elliptisch_model(beta,params);
 %function model = praktikum_elliptisch_model(params)
 %
 % small example of a model, i.e. a structure describing the data
@@ -54,12 +54,12 @@ if nargin<1
   params = [];
 end;
 
-% ‹berpr¸fen, ob der Rand ein reiner Dirichletrand sein soll
-if ~isfield(params,'all_dirichlet_boundary')
-  params.all_dirichlet_boundary = 1;
-end;
+%Falls beta=0 ist, so ist der Rand ein reiner Dirichletrand 
+%Umsetzung noch nicht klar
+%Mit if probieren, sodass if beta<= 1e-10, dann all_dirichlet_boundary_type
+%ausf√ºhren, sonst mixed_boundary_type
 
-% Anlegen der Lˆsungsfunktion f¸r Fehlerberechnungen oder Ahnliches
+% Anlegen der L√∂sungsfunktion f√ºr Fehlerberechnungen oder Ahnliches
  model.solution = @(glob,params) ...
      exp(-(glob(:,1)-1).^2 -(glob(:,2)-1).^2);
 % Bestimmen des Gradienten mithilfe des Differenzenquotienten 
@@ -69,7 +69,7 @@ end;
      model.solution(glob-repmat([ds/2,0],size(glob,1),1)))/ds,...
      (model.solution(glob+repmat([0,ds/2],size(glob,1),1))-...
       model.solution(glob-repmat([0,ds/2],size(glob,1),1)))/ds];
-% Anlegen aller nˆtigen Funktionen
+% Anlegen aller n√∂tigen Funktionen
 model.source= @(glob,params)...
     -2*exp(-(glob(:,1)-1).^2 -(glob(:,2)-1).^2)*(2*(glob(:,1)).^3 ...
     +2*(glob(:,1)).*(glob(:,2)).^2 ...
@@ -83,6 +83,67 @@ model.diffusivity_gradient= @(glob,params)...
     [(model.diffusivity(glob+repmat([ds/2,0],size(glob,1),1))-...
      model.diffusivity(glob-repmat([ds/2,0],size(glob,1),1)))/ds,...
      zeros(size(glob,1),1)];
-% Die Ableitung der zwiten Koordinate ist konstant 0, da die Diffusivit‰t
-% unabh‰ngig von x_2 ist
-%Soweit so gut, nun kommt noch die ganze Randgeschichte....
+% Die Ableitung der zwiten Koordinate ist konstant 0, da die Diffusivit√§t
+% unabh√§ngig von x_2 ist
+model.dirchlet_values= @(glob,params)...
+    exp(-(glob(:,1)-1).^2 -(glob(:,2)-1).^2);
+model.neumann_values= @(glob,params)...
+    2*(2 + glob(:,1)).* exp(-(glob(:,1)-1).^2 -(glob(:,2)-1).^2);
+    
+%Nun die Funktion, die f√ºr einen Punkt entscheidet, ob er auf dem Rand 
+%liegt, und wenn ja auf welchem Rand.
+
+model.boundary_type = @mixed_boundary_type;
+if beta <=1e-10
+  model.boundary_type = @all_dirichlet_boundary_type;
+end;
+model.normals = @my_normals;
+
+
+%Es gibt nur den Dirichletrand, also beta=0
+function res = all_dirichlet_boundary_type(glob,params)
+res = zeros(size(glob,1),1);
+%rechte und linke Kante
+i  = find(glob(:,1)<=-1+1e-10);
+res(i) = -1;
+i  = find(glob(:,1)>=1-1e-10);
+res(i) = -1;
+%obere und untere Kante
+i  = find(glob(:,2)<=-1+1e-10);
+res(i) = -1;
+i  = find(glob(:,2)>=1-1e-10);
+res(i) = -1;
+%mittlere x-Kante
+i  = find(glob(:,2)>=-1e-10 & glob(:,2)<=1e-10 & glob(:,1)>=-1e-10);
+res(i) = -1;
+%mittlere y-Kante
+i  = find(glob(:,1)>=-1e-10 & glob(:,1)<=1e-10 & glob(:,2)>=-1e-10);
+res(i) = -1;
+
+%Es gibt auch Neumannrand, also 1>beta>0 
+function res = mixed_boundary_type(glob,beta,params)
+res = zeros(size(glob,1),1);
+%rechte und linke Kante 
+i  = find(glob(:,1)<=-1+1e-10);
+res(i) = -1;
+i  = find(glob(:,1)>=1-1e-10);
+res(i) = -1;
+%obere und untere Kante des L's
+i  = find(glob(:,2)<= -1+1e-10);
+res(i) = -1;
+i  = find(glob(:,2)>= 1-1e-10);
+res(i) = -1;
+%mittlere x-Kante
+i  = find(glob(:,2)>=-1e-10 & glob(:,2)<=1e-10 & glob(:,1)>=-1e-10 & ...
+    glob(:,1)<=beta);
+res(i) = -2;
+i =  find(glob(:,2)>=-1e-10 & glob(:,2)<=1e-10 & glob(:,1)>beta);
+res(i) = -1;
+%mittlere y-Kante
+i  = find(glob(:,1)>=-1e-10 & glob(:,1)<=1e-10 & glob(:,2)>=-1e-10 & ...
+    glob(:,1)<=beta);
+res(i) = -2;
+i =  find(glob(:,1)>=-1e-10 & glob(:,1)<=1e-10 & glob(:,2)>beta );
+res(i) = -1;
+
+%Nun fehlt nur noch die normals funktion und dann ist das Model vollst√§ndig
