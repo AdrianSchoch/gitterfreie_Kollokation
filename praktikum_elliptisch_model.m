@@ -54,9 +54,9 @@ if nargin<1
   params = [];
 end;
 
-%Falls beta=0 ist, so ist der Rand ein reiner Dirichletrand 
+%Falls Beta=0 ist, so ist der Rand ein reiner Dirichletrand 
 %Umsetzung noch nicht klar
-%Mit if probieren, sodass if beta<= 1e-10, dann all_dirichlet_boundary_type
+%Mit if probieren, sodass if Beta<= 1e-10, dann all_dirichlet_boundary_type
 %ausführen, sonst mixed_boundary_type
 
 % Anlegen der Lösungsfunktion für Fehlerberechnungen oder Ahnliches
@@ -71,10 +71,10 @@ end;
       model.solution(glob-repmat([0,ds/2],size(glob,1),1)))/ds];
 % Anlegen aller nötigen Funktionen
 model.source= @(glob,params)...
-    -2*exp(-(glob(:,1)-1).^2 -(glob(:,2)-1).^2)*(2*(glob(:,1)).^3 ...
+    -2*exp(-(glob(:,1)-1).^2 -(glob(:,2)-1).^2).*(2*(glob(:,1)).^3 ...
     +2*(glob(:,1)).*(glob(:,2)).^2 ...
     -4*(glob(:,1)).*(glob(:,2)) ... 
-    +4*(x_2).^2 ...
+    +4*(glob(:,2)).^2 ...
     -7*(glob(:,1))-8*(glob(:,2))+5);
 model.reaction = @(glob,params) zeros(size(glob,1),1);
 model.velocity = @(glob,params) zeros(size(glob,1),1);
@@ -100,7 +100,7 @@ end;
 model.normals = @my_normals;
 
 
-%Es gibt nur den Dirichletrand, also beta=0
+%Es gibt nur den Dirichletrand, also Beta=0
 function res = all_dirichlet_boundary_type(glob,params)
 res = zeros(size(glob,1),1);
 %rechte und linke Kante
@@ -119,9 +119,10 @@ res(i) = -1;
 %mittlere y-Kante
 i  = find(glob(:,1)>=-1e-10 & glob(:,1)<=1e-10 & glob(:,2)>=-1e-10);
 res(i) = -1;
+end
 
-%Es gibt auch Neumannrand, also 1>beta>0 
-function res = mixed_boundary_type(glob,beta,params)
+%Es gibt auch Neumannrand, also 1>Beta>0 
+function res = mixed_boundary_type(glob,params)
 res = zeros(size(glob,1),1);
 %rechte und linke Kante 
 i  = find(glob(:,1)<=-1+1e-10);
@@ -135,7 +136,7 @@ i  = find(glob(:,2)>= 1-1e-10);
 res(i) = -1;
 %mittlere x-Kante
 i  = find(glob(:,2)>=-1e-10 & glob(:,2)<=1e-10 & glob(:,1)>=-1e-10 & ...
-    glob(:,1)<=beta);
+     glob(:,1)<=beta);
 res(i) = -2;
 i =  find(glob(:,2)>=-1e-10 & glob(:,2)<=1e-10 & glob(:,1)>beta);
 res(i) = -1;
@@ -143,7 +144,11 @@ res(i) = -1;
 i  = find(glob(:,1)>=-1e-10 & glob(:,1)<=1e-10 & glob(:,2)>=-1e-10 & ...
     glob(:,1)<=beta);
 res(i) = -2;
-i =  find(glob(:,1)>=-1e-10 & glob(:,1)<=1e-10 & glob(:,2)>beta );
+i =  find(glob(:,1)>=-1e-10 & glob(:,1)<=1e-10 & glob(:,2)>beta);
 res(i) = -1;
+end
+%Nun fehlt nur noch die normals funktion und dann ist das Model vollständig
+
+end
 
 %Nun fehlt nur noch die normals funktion und dann ist das Model vollständig
