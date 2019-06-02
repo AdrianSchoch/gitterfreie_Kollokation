@@ -147,8 +147,32 @@ res(i) = -2;
 i =  find(glob(:,1)>=-1e-10 & glob(:,1)<=1e-10 & glob(:,2)>beta);
 res(i) = -1;
 end
-%Nun fehlt nur noch die normals funktion und dann ist das Model vollständig
+
+%Nun die noch die normals Funktion 
+
+function res = my_normals(glob,params);
+res = zeros(size(glob,1),2); % each row one normal
+%rechte und linke Kante erster Eintrag 
+i  = find(glob(:,1)<=-1+1e-10);
+res(i,1) = -1;
+i  = find(glob(:,1)>=1-1e-10);
+res(i,1) = 1;
+%obere und untere Kante des L's
+i  = find(glob(:,2)<= -1+1e-10);
+res(i,2) = -1;
+i  = find(glob(:,2)>= 1-1e-10);
+res(i,2) = 1;
+%mittlere x-Kante
+i  = find(glob(:,2)>=-1e-10 & glob(:,2)<=1e-10 & glob(:,1)>=-1e-10);
+res(i,2) = 1;
+%mittlere y-Kante
+i  = find(glob(:,1)>=-1e-10 & glob(:,1)<=1e-10 & glob(:,2)>=-1e-10);
+res(i,1) = 1;
+% remove diagonal normals
+i = find (sum(abs(res),2)>1.5);
+res(i,1)= 0;
+end
 
 end
 
-%Nun fehlt nur noch die normals funktion und dann ist das Model vollständig
+
