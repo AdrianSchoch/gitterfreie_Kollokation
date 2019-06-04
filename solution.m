@@ -37,6 +37,8 @@ figure(2)
 surf(X,Y,R);
 figure(3)
 surf(X,Y,S);
+figure(4)
+surf(X,Y,abs(R-S));
 
 
 function [A, b] = lgs_assembler(model, discr, last_inner, last_dirichlet)
