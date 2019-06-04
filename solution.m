@@ -1,7 +1,7 @@
-n = 500;
-m = 200;
-discr = diskretisierung(n, m);
-model = praktikum_elliptisch_model(1);
+n = 1000;
+m = 1000;
+discr = diskretisierung(n, m, 0);
+model = praktikum_elliptisch_model(0);
 
 [glob, last_inner, last_dirichlet] = point_sorter(discr.Xh_strich, model);
 % disp(last_inner);
@@ -16,6 +16,7 @@ plot(glob(last_dirichlet+1:end,1), glob(last_dirichlet+1:end,2), 'g.');
 
 [A, b] = lgs_assembler(model, discr, last_inner, last_dirichlet);
 c = A\b;
+cc = pcg(A,b);
 
 grid_width_temp = 100;
 X = linspace(-1, 1, grid_width_temp);

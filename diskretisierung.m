@@ -1,7 +1,14 @@
-function discr = diskretisierung(n, m)
-discr.Xh = random_center(n, m);
-discr.Xh_strich = discr.Xh;
-discr.gamma = 1;
+function discr = diskretisierung(n, m, type)
+if type == 0
+    discr.Xh = random_center(n, m);
+    discr.Xh_strich = discr.Xh;
+    else if type == -1
+        discr.Xh = kartesisches_gitter(n,m);
+        discr.Xh_strich = discr.Xh;
+    end
+end
+
+discr.gamma = 0.01;
 discr.ds = 1e-5;
 discr.grad = @gradient;
 discr.div = @divergence;
