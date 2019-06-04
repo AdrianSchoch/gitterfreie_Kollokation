@@ -16,7 +16,6 @@ plot(glob(last_dirichlet+1:end,1), glob(last_dirichlet+1:end,2), 'g.');
 
 [A, b] = lgs_assembler(model, discr, last_inner, last_dirichlet);
 c = A\b;
-cc = pcg(A,b);
 
 grid_width_temp = 100;
 X = linspace(-1, 1, grid_width_temp);
@@ -27,6 +26,10 @@ for i = 1:grid_width_temp
     for j = 1:grid_width_temp
         R(i,j) = sum(c .* discr.eval([X(i), Y(j)]));
         S(i,j) = model.solution([X(i), Y(j)]);
+        if i > 50 & j > 50
+            R(i,j) = NaN;
+            S(i,j) = NaN;
+        end
     end
 end
 figure(2)
