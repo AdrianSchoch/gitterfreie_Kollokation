@@ -22,31 +22,17 @@ C = [A ; B];
 end
 
 % Funktionsweise von random_inner_center:
-% Wir wollen n zufällige Punkte im Inneren von Omega.
-% Zunächst konstruieren wir mit firstcoordinatevector eine
-% (nx1)-Matrix v_1 mit zufälligen Einträgen im Intervall [-1,1].
-% Ein solcher Eintrag wird als die erste Koordinate eines Punktes
-% interpretiert. Durch die Anwendung der Funktion inner_y_coordinate
-% auf jeden Eintrag (mittels des Befehls arrayfun) konstruieren wir eine
-% zweite (nx1)-Matrix v_2. Jedes ihrer zufälligen Einträge wird als 
-% y-Koordinate interpretiert (bei der Konstruktion von
-% inner_y_coordinate wurde darauf geachtet, dass sich die Punkte im
-% Inneren von Omega befinden). Schließlich werden v_1 und v_2 zu einer
-% Matrix zusammmengesetzt.
+% Bei einer Eingabe von n werden jeweils n Punkte im zweiten, dritten und
+% vierten Quadranten erzeugt.
 
 function [ric] = random_inner_center(n)
-v_1 = -1 + 2.*rand(n,1);
-v_2 = arrayfun(@inner_y_coordinate,v_1);
-ric = [v_1, v_2];
-end
-
-
-function [l] = inner_y_coordinate(x)
-if -1 < x && x < 0
-    l = -1 + 2.*rand(1,1);
-elseif 0 <= x && x < 1
-    l = -1 + rand(1,1);
-end
+v_1 = -1 + rand(n,1);
+v_2 = rand(n,1);
+v_3 = -1 + rand(n,1);
+v_4 = -1 + rand(n,1);
+v_5 = rand(n,1);
+v_6 = -1 + rand(n,1);
+ric = [v_1, v_2; v_3, v_4; v_5, v_6 ];
 end
 
 % Funktionsweise von random_edge_center:
