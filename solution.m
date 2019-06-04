@@ -27,11 +27,12 @@ for i = 1:grid_width_temp
         R(i,j) = sum(c .* discr.eval([X(i), Y(j)]));
         S(i,j) = model.solution([X(i), Y(j)]);
         if i > 50 & j > 50
-            R(i,j) = NaN;
-            S(i,j) = NaN;
+            R(i,j) = 0;
+            S(i,j) = 0;
         end
     end
 end
+disp(abs(sum(sum(R-S))/(grid_width_temp*grid_width_temp*3/4)))
 figure(2)
 surf(X,Y,R);
 figure(3)
