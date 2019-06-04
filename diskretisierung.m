@@ -2,10 +2,9 @@ function discr = diskretisierung(n, m, type)
 if type == 0
     discr.Xh = random_center(n, m);
     discr.Xh_strich = discr.Xh;
-    else if type == -1
+elseif type == -1
         discr.Xh = kartesisches_gitter(n,m);
         discr.Xh_strich = discr.Xh;
-    end
 end
 
 discr.gamma = 0.01;
