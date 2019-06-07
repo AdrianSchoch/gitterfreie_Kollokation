@@ -1,9 +1,12 @@
-function discr = diskretisierung(n, m, type)
+function discr = diskretisierung(n, m, type, model)
+% type 0 bedeutet zuf‰llig verteilte Punkte
+% type -1 bedeutet gleichm‰ﬂiges Punktgitter
+% type -2 bedeutet zum Rand verdichtetes Punktgitter
 if type == 0
-    discr.Xh = random_center(n, m);
+    discr.Xh = random_center(n, m, model);
     discr.Xh_strich = discr.Xh;
 elseif type == -1
-        discr.Xh = kartesisches_gitter(n,m);
+        discr.Xh = kartesisches_gitter(n, m, model);
         discr.Xh_strich = discr.Xh;
 end
 

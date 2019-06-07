@@ -91,6 +91,7 @@ model.normals = @my_normals;
 model.neumann_values = @(glob,params) ... 
     model.diffusivity(glob).*...
     sum(model.solution_gradient(glob).*model.normals(glob),2);
+model.area_type = 0;
 
 % all edges of unit square are dirichlet, other inner
 function res = all_dirichlet_boundary_type(glob,params)

@@ -1,9 +1,10 @@
-n = 100;
+n = 200;
 m = 100;
-discr = diskretisierung(n, m, 0);
 model = praktikum_elliptisch_model(0.5);
+discr = diskretisierung(n, m, -1, model);
 
 [glob, last_inner, last_dirichlet] = point_sorter(discr.Xh_strich, model);
+disp(length(glob))
 % disp(last_inner);
 % disp(last_dirichlet);
 

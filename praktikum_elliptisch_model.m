@@ -89,6 +89,7 @@ model.dirichlet_values= @(glob,params)...
     exp(-(glob(:,1)-1).^2 -(glob(:,2)-1).^2);
 model.neumann_values= @(glob,params)...
     2*(2 + glob(:,1)).* exp(-(glob(:,1)-1).^2 -(glob(:,2)-1).^2);
+model.area_type = -1;
     
 %Nun die Funktion, die für einen Punkt entscheidet, ob er auf dem Rand 
 %liegt, und wenn ja auf welchem Rand.

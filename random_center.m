@@ -15,24 +15,27 @@
 % genierten Punkte interpretiert. Dabei wird die erste Spalte als
 % die x-Koordinate und die zweite Spalte als y-Koordinate interpretiert.
 
-function [C] = random_center(n,m)
-A = random_inner_center(n);
-B = random_edge_center(m);
-C = [A ; B];
+function [C] = random_center(n, m, model)
+C = [random_inner_center(n, model); random_edge_center(m, model)];
 end
 
 % Funktionsweise von random_inner_center:
 % Bei einer Eingabe von n werden jeweils n Punkte im zweiten, dritten und
 % vierten Quadranten erzeugt.
 
-function [ric] = random_inner_center(n)
-v_1 = -1 + rand(n,1);
-v_2 = rand(n,1);
-v_3 = -1 + rand(n,1);
-v_4 = -1 + rand(n,1);
-v_5 = rand(n,1);
-v_6 = -1 + rand(n,1);
-ric = [v_1, v_2; v_3, v_4; v_5, v_6 ];
+function [ric] = random_inner_center(n, model)
+if model.area_type == 0
+    ric = [-1+2*rand(n,1), -1+2*rand(n,1)];
+elseif model.area_type == -1
+    n = round(n/3);
+    v_1 = -1 + rand(n,1);
+    v_2 = rand(n,1);
+    v_3 = -1 + rand(n,1);
+    v_4 = -1 + rand(n,1);
+    v_5 = rand(n,1);
+    v_6 = -1 + rand(n,1);
+    ric = [v_1, v_2; v_3, v_4; v_5, v_6 ];
+end
 end
 
 % Funktionsweise von random_edge_center:
@@ -46,14 +49,21 @@ end
 % Anwendung der Funktionen auf jeden Eintrag von A. Schließlich
 % müssen sie nur noch zusammengesetzt werden.
 
-function [rec] = random_edge_center(m)
-A = 8.*rand(m,1);
-B = arrayfun(@firstcoordinate,A);
-C = arrayfun(@secondcoordinate,A);
-rec = [B,C];
+function [rec] = random_edge_center(m, model)
+if model.area_type == 0
+    A = 4.*rand(m,1);
+    B = arrayfun(@firstcoordinate_1,A);
+    C = arrayfun(@secondcoordinate_1,A);
+    rec = [B,C];
+elseif model.area_type == -1
+    A = 8.*rand(m,1);
+    B = arrayfun(@firstcoordinate_2,A);
+    C = arrayfun(@secondcoordinate_2,A);
+    rec = [B,C];
+end
 end
 
-function [x] = firstcoordinate(k)
+function [x] = firstcoordinate_2(k)
 switch floor(k)
     case 0
         x = k-1;
@@ -74,7 +84,7 @@ switch floor(k)
 end
 end
 
-function [y] = secondcoordinate(k)
+function [y] = secondcoordinate_2(k)
 switch floor(k)
     case 0
         y = -1;
@@ -92,5 +102,31 @@ switch floor(k)
         y = 7-k;
     case 7
         y = 7-k;
+end
+end
+
+function [x] = firstcoordinate_1(k)
+switch floor(k)
+    case 0
+        x = 2*k-1;
+    case 1
+        x = 1;
+    case 2
+        x = 5-2*k;
+    case 3
+        x = -1;
+end
+end
+
+function [y] = secondcoordinate_1(k)
+switch floor(k)
+    case 0
+        y = -1;
+    case 1
+        y = 2*k-3;
+    case 2
+        y = 1;
+    case 3
+        y = 7-2*k;
 end
 end
