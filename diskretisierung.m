@@ -1,4 +1,4 @@
-function discr = diskretisierung(n, m, type, model)
+function discr = diskretisierung(n, m, type, model, gamma)
 % type 0 bedeutet zuf‰llig verteilte Punkte
 % type -1 bedeutet gleichm‰ﬂiges Punktgitter
 % type -2 bedeutet zum Rand verdichtetes Punktgitter
@@ -10,7 +10,7 @@ elseif type == -1
         discr.Xh_strich = discr.Xh;
 end
 
-discr.gamma = 0.01;
+discr.gamma = gamma;
 discr.ds = 1e-5;
 discr.grad = @gradient;
 discr.div = @divergence;

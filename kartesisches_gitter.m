@@ -108,7 +108,7 @@ end
 
 %Nun zum ersten Teilquadrat
 function res =cartesiangrid_inner_1(n)
-    n = round(sqrt(n)/3);
+    n = round(sqrt(n/3));
     x1 = linspace(-1,0,n+2);
     y1 = linspace(0,1,n+2);
     x1 = x1(2:end-1);
@@ -117,7 +117,7 @@ function res =cartesiangrid_inner_1(n)
 end
 %zweites Teilquadrat
 function res =cartesiangrid_inner_2(n)
-    n = round(sqrt(n)/3);
+    n = round(sqrt(n/3));
     x2 = linspace(-1,0,n+2);
     y2 = linspace(-1,0,n+2);
     x2 = x2(2:end-1);
@@ -126,7 +126,7 @@ function res =cartesiangrid_inner_2(n)
 end
 %drittes Teilquadrat
 function res =cartesiangrid_inner_3(n)
-    n = round(sqrt(n)/3);
+    n = round(sqrt(n/3));
     x3 = linspace(0,1,n+2);
     y3 = linspace(-1,0,n+2);
     x3 = x3(1:end-1);
