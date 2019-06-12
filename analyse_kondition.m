@@ -1,4 +1,4 @@
-x = 1000;
+x = 200;
 L1_error_array = zeros(x, 1);
 L2_error_array = zeros(x, 1);
 Linf_error_array = zeros(x, 1);
@@ -6,7 +6,7 @@ cond_array = zeros(x,1);
 for i = 1:x
     disp("i = " + num2str(i));
     model = praktikum_elliptisch_model(0.5);
-    discr = diskretisierung(25, 25, 0, model, 0.5);
+    discr = diskretisierung(100, 100, 0, model, 0.5);
     [A, b] = lgs_assembler(model, discr);
     c = A\b;
     cond_array(i) = cond(A);
