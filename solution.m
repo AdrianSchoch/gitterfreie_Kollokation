@@ -1,7 +1,7 @@
 n = 200;
 m = 200;
 model = praktikum_elliptisch_model(0.5);
-discr = diskretisierung(n, m, 0, model, 0.7);
+discr = diskretisierung(n, m, 0, model, 1);
 
 case_array = model.boundary_type(discr.Xh_strich);
 last_inner = length(discr.Xh_strich(case_array==0));

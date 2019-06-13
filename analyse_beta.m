@@ -13,8 +13,6 @@ for i = 1:x
         [N, S, L1_error_array(i, j), L2_error_array(i, j), Linf_error_array(i, j)] = grid_evaluation(50, c, discr, model);
     end
 end
-plot(linspace(0.01, 1, 100), median(L1_error_array.'), 'r');
+plot(linspace(0.01, 1, 100), median(L2_error_array.'), 'b');
 hold on
-plot(linspace(0.01, 1, 100), median(L2_error_array.'), 'g');
-hold on
-plot(linspace(0.01, 1, 100), median(Linf_error_array.'), 'b');
+plot(linspace(0.01, 1, 100), median(Linf_error_array.'), 'r');
