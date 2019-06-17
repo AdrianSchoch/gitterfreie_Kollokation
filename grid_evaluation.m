@@ -6,8 +6,8 @@ N = zeros(grid_steps, grid_steps);
 S = zeros(grid_steps, grid_steps);
 for k = 1:grid_steps
     for j = 1:grid_steps
-        N(k,j) = 0;
-        S(k,j) = 0;
+        N(k,j) = sum(c .* discr.eval([X(k), Y(j)]));
+        S(k,j) = model.solution([X(k), Y(j)]);
     end
 end
 L1_error = abs(sum(sum(N-S))/(grid_steps*grid_steps));
