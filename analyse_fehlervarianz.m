@@ -8,7 +8,7 @@ L1_error_array_2 = zeros(x, 1);
 L2_error_array_2 = zeros(x, 1);
 Linf_error_array_2 = zeros(x, 1);
 for i = 1:x
-    discr = diskretisierung(100, 100, 0, model, 0.5);
+    discr = diskretisierung(100, 100, 0, model, 0.1);
     disp(i)
     [A, b] = lgs_assembler(model, discr);
     c = A\b;
@@ -33,10 +33,10 @@ figure(2)
 histogram(Linf_error_array, round(x/10));
 disp(length(find(isnan(Linf_error_array))));
 figure(3)
-histogram(sum(reshape(L2_error_array_2, [y, round(x/y)]))/y, round(x/(5*y)));
+histogram(sum(reshape(L2_error_array_2, [y, round(x/y)]))/y, round(x/(y)));
 figure(4)
-histogram(sum(reshape(Linf_error_array_2, [y, round(x/y)]))/y, round(x/(5*y)));
+histogram(sum(reshape(Linf_error_array_2, [y, round(x/y)]))/y, round(x/(y)));
 figure(5)
-histogram(median(reshape(L2_error_array_2, [y, round(x/y)]))/y, round(x/(5*y)));
+histogram(median(reshape(L2_error_array_2, [y, round(x/y)]))/y, round(x/(y)));
 figure(6)
-histogram(median(reshape(Linf_error_array_2, [y, round(x/y)])), round(x/(5*y)));
+histogram(median(reshape(Linf_error_array_2, [y, round(x/y)])), round(x/(y)));

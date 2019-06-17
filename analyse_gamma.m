@@ -1,9 +1,10 @@
 y = 10;
-L2_error_array = zeros(36, y);
-Linf_error_array = zeros(36, y);
-temp = linspace(0.001, 0.009, 9);
+L2_error_array = zeros(100, y);
+Linf_error_array = zeros(100, y);
+temp = linspace(0.001, 0.01, 26);
+temp = temp(1:end-1);
 gamma_array = [temp, 10*temp, 100*temp, 1000*temp];
-for i = 1:36
+for i = 1:100
     disp("i = " + num2str(i));
     model = praktikum_elliptisch_model(0.5);
     for j = 1:y
